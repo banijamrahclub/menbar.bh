@@ -3033,7 +3033,15 @@
                     });
 
                     const geminiData = await geminiResp.json();
-                    const optimizedPrompt = geminiData.candidates[0].content.parts[0].text;
+
+                    let optimizedPrompt = "";
+                    if (geminiData && geminiData.candidates && geminiData.candidates[0]) {
+                        optimizedPrompt = geminiData.candidates[0].content.parts[0].text;
+                    } else {
+                        console.warn("Gemini Analysis failed, using fallback prompt:", geminiData);
+                        // Fallback prompt if Gemini fails
+                        optimizedPrompt = `Premium 4K Islamic Poster for ${data.eventName}. Featuring: ${validSpeakers.join(', ')}. Date: ${data.day} ${data.date}. Location: ${data.location}. Style: Professional Digital Art.`;
+                    }
 
                     // --- STEP 2: EXECUTE REAL GENERATION ---
                     setAdsStatus("Nano Banana Bro (Gemini Powered) يقوم بالرسم والدمج الآن...");
